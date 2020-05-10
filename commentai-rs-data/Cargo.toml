@@ -1,0 +1,11 @@
+[package]
+name = "commentai-rs-data"
+version = "0.1.0"
+authors = ["kreako <olivier@kreako.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4.11", features = ["serde"] }
+serde = { version = "1.0.110", features = ["derive"] }

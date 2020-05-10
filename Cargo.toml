@@ -1,0 +1,6 @@
+[workspace]
+members = ["commentai-rs-data",
+           "commentai-rs-sqlite",
+           "commentai-rs-actors",
+           "commentai-rs-server",
+           "commentai-rs-cli"]

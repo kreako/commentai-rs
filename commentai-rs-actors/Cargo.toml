@@ -1,0 +1,12 @@
+[package]
+name = "commentai-rs-actors"
+version = "0.1.0"
+authors = ["kreako <olivier@kreako.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix = "0.9.0"
+commentai-rs-data = { path = "../commentai-rs-data" }
+commentai-rs-sqlite = { path = "../commentai-rs-sqlite" }
