@@ -1,14 +1,14 @@
 use actix::prelude::*;
-use chrono::Utc;
 use actix_web::{web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder};
+use chrono::Utc;
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use serde::Deserialize;
 use std::env;
-use std::net::{SocketAddr, IpAddr};
+use std::net::{IpAddr, SocketAddr};
 use std::str::FromStr;
 
-use commentai_rs_actors::db;
+use commentai_rs_actors::{db, local_tcp};
 use commentai_rs_data::Comment;
 
 async fn index() -> impl Responder {
@@ -45,16 +45,18 @@ async fn new_comment(
     new_comment: web::Json<NewComment>,
 ) -> Result<HttpResponse, Error> {
     let new_comment = new_comment.into_inner();
-    println!("{}  {:?}", req.connection_info().host(), req.connection_info().remote());
+    println!(
+        "{}  {:?}",
+        req.connection_info().host(),
+        req.connection_info().remote()
+    );
     let peer_ip = match req.connection_info().remote() {
-        Some(socket) => {
-            match SocketAddr::from_str(socket) {
+        Some(socket) => match SocketAddr::from_str(socket) {
             Ok(s) => s.ip(),
             Err(_e) => {
                 eprintln!("Error in SocketAddr parse");
                 return Ok(HttpResponse::InternalServerError().into());
             }
-        }
         },
         None => return Ok(HttpResponse::InternalServerError().into()),
     };
@@ -78,7 +80,7 @@ async fn main() -> std::io::Result<()> {
     let db_addr = SyncArbiter::start(2, move || db::DbExecutor::new(&db_url));
 
     // Start local admin interface
-    // local_tcp::local_server(8888, db_addr.clone());
+    local_tcp::local_server(8888, db_addr.clone());
 
     let mut listenfd = ListenFd::from_env();
     let mut server = HttpServer::new(move || {

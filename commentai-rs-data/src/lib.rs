@@ -6,7 +6,7 @@ use std::net::IpAddr;
 /// A struct representing a comment
 pub struct Comment {
     /// Id of the comment - optional
-    pub id: Option<u32>,
+    pub id: Option<i32>,
     /// Title of the comment - optional
     pub title: Option<String>,
     /// Content of the comment
@@ -25,12 +25,4 @@ pub struct Comment {
 
     /// Url to comment
     pub url: String,
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
 }
